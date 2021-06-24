@@ -335,7 +335,7 @@ server <- function(input, output) {
         pcs <- as.numeric(unique(c(input$PC1, input$PC2)))
       }
       
-      loadingplot(PCA.PCA, pc = pcs, show.names = TRUE, main = "Loadings")
+      loadingplot.PCA(PCA.PCA, pc = pcs, show.names = TRUE, main = "Loadings")
     })
   })
 
@@ -350,7 +350,7 @@ server <- function(input, output) {
         pcs <- as.numeric(unique(c(input$PC1W, input$PC2W)))
       }
       
-      loadingplot(wine.PCA, pc = pcs, show.names = TRUE, main = "Loadings")
+      loadingplot.PCA(wine.PCA, pc = pcs, show.names = TRUE, main = "Loadings")
     })
   })
 
@@ -361,10 +361,10 @@ server <- function(input, output) {
     pcs <- sort(pcs)
 
     par(mfrow = c(1,3))
-    scoreplot(wine.PCA, pc = pcs, col = as.integer(vintages))
-    loadingplot(wine.PCA, pc = pcs, show.names = TRUE)
-    biplot(wine.PCA, pc = pcs, score.col = as.integer(vintages),
-           show.names = "loadings")
+    scoreplot.PCA(wine.PCA, pc = pcs, col = as.integer(vintages))
+    loadingplot.PCA(wine.PCA, pc = pcs, show.names = TRUE)
+    biplot.PCA(wine.PCA, pc = pcs, score.col = as.integer(vintages),
+               show.names = "loadings")
     })
   
   output$PCABiplotQuestionWine <- renderText({
@@ -387,7 +387,7 @@ server <- function(input, output) {
     })
     
     output$LamboLoadings <- renderPlot({
-      loadingplot(Lambo.PCA(), pc = 1:2, main = "Loadings")
+      loadingplot.PCA(Lambo.PCA(), pc = 1:2, main = "Loadings")
     })
     output$LamboScores <- renderPlot({
       myscoreplot(Lambo.PCA(), pc = 1:2, groups = sample.labels)
