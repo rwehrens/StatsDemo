@@ -261,7 +261,7 @@ server <- function(input, output) {
     })
     
     output$PLSWinequestion <- renderText({
-      "In most cases the amount of variation covered in the PCA scores will be larger than in the PLS scores. Any idea why?"})
+      "In which cases do the PLS scores give better class separation than the PCA scores? Are there any cases where PCA does better? In most cases the amount of variation covered in the PCA scores will be larger than in the PLS scores. Any idea why?"})
   })
 
   observeEvent(input$winePLScoefs, {
@@ -379,8 +379,8 @@ server <- function(input, output) {
                     rbind(as.data.frame(WinePLSX.tr),
                           as.data.frame(WinePLSX.tst)))
                              
-    PLSmodW <- plsr(alcohol ~ . - type, data = winePLS.df,
-                    subset = type == "training", ncomp = 10,
+    PLSmodW <- plsr(alcohol ~ ., data = winePLS.df[-2],
+                    subset = winePLS.df$type == "training", ncomp = 10,
                     validation = "LOO")
     
     output$PLScvW <- renderPlot({
@@ -393,7 +393,8 @@ server <- function(input, output) {
       observeEvent(input$PLSWnLV, {
         observeEvent(input$PLSScalingW, {
           plspredictions <- 
-            c(predict(PLSmodW, newdata = winePLS.df[winePLS.df$type == "test",],
+            c(predict(PLSmodW,
+                      newdata = winePLS.df[winePLS.df$type == "test",-2],
                       ncomp = as.numeric(input$PLSWnLV)))
           
           output$PLSpredictionsW <- renderPlot({
@@ -504,7 +505,7 @@ server <- function(input, output) {
                   main = paste("Predictions correct for ",
                                ntotal - ncorrect*ntotal,
                                " out of ", ntotal, " cases (= ",
-                               round(ncorrect, 3), ")", sep = ""))
+                               100*round(1-ncorrect, 3), "%)", sep = ""))
           points(1:nrow(plspredictionsL),
                  apply(plspredictionsL, 1, max),
                  col = as.integer(sample.labels[lamboTest.idx]),
