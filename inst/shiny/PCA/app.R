@@ -2,6 +2,8 @@ require(shiny)
 require(shinydashboard)
 require(StatsDemo)
 
+options(bitmapType = "cairo")
+
 sidebar <- dashboardSidebar(
   helpText("Understanding PCA"),
   sidebarMenu(

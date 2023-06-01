@@ -2,6 +2,8 @@ require(StatsDemo)
 require(shiny)
 require(shinydashboard)
 
+options(bitmapType = "cairo")
+
 ui <- fluidPage(
   titlePanel("Plotting multivariate data"),
   sidebarLayout(
